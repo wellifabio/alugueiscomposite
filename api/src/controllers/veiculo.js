@@ -13,7 +13,7 @@ const createVeiculo = (req, res) => {
                 "diaria": 100.00
             }
         }
-        res.json(erro);
+        res.status(400).json(erro);
         return;
     }
     const sql = "INSERT INTO veiculo (placa, marca, modelo, tipo, diaria) VALUES (?,?,?,?,?)";

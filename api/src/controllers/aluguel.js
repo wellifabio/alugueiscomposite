@@ -33,7 +33,7 @@ const createAluguel = (req, res) => {
                 "subtotal": 500.00
             }
         }
-        res.json(erro);
+        res.status(400).json(erro);
         return;
     }
     const sql = "INSERT INTO aluguel (placa, cpf, reserva, retirada, devolucao, subtotal) VALUES (?,?,?,?,?,?)";
@@ -43,7 +43,9 @@ const createAluguel = (req, res) => {
                 if (err.code == "ER_DUP_ENTRY") {
                     res.status(400).json({ "erro": "Aluguel já cadastrado" }).end();
                     return;
-                } else {
+                } else if(err.code == "ER_NO_REFERENCED_ROW_2"){
+                    res.status(400).json({ "erro": "CPF do cliente ou placa do veículo não cadastrada" }).end();
+                }else{
                     res.status(500).json(err).end();
                 }
             } else {
